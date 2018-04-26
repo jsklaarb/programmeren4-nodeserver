@@ -1,15 +1,13 @@
 const express = require('express');
 const morgan = require('morgan');
-const Person = require('./domain/Person');
 const bodyparser = require('body-parser');
+const personRoutes = require('./routes/person-routes');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(morgan('dev'));
 app.use(bodyparser.json());
-
-let personlist = [];
 
 app.use('*', (req, res, next) => {
 	let httpmethod = req.method;
@@ -20,7 +18,7 @@ app.use('*', (req, res, next) => {
   next();
 });
 
-
+app.use('/api', personRoutes);
 
   // Wanneer de gevraagde endpoint niet gevonden is komen we hier.
 app.use('*', (req, res, next) => {
@@ -32,7 +30,7 @@ app.use('*', (req, res, next) => {
 	const error = {
 		error: 'Endpoint does not exist',
 		url: requesturl
-	}
+	};
   
 	next(error);
 });

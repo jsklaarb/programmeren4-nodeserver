@@ -1,31 +1,13 @@
+const express = require('express');
+const personController = require('../contollers/person-controller');
+const routes = express.Router();
 
+routes.get('/person', personController.getAllPersons);
 
-app.get('/api/person', (req, res, next) => {
-	res.status(200).json(personlist).end();
-});
+routes.get('/person/:id', personController.getPersonById);
 
-app.get('/api/person/:id', (req, res, next) => {
-	const id = req.params.id;
+routes.post('/person', personController.createPerson);
 
-  // als id geldig is in de personlist: stuur person terug
-	if(id >= 0 && id < personlist.length){
-		res.status(200).json(personlist[id]).end();
-	} else { // als id niet geldig is: error
-		const error = {
-			error: 'ID does not exist (index out of bounds)'
-		}
-		next(error);
-	}
-});
+routes.delete('/person/:id', personController.deletePersonById);
 
-app.post('/api/person', (req, res, next) => {
-	console.log(req.body);
-
-	const firstname = req.body.firstname;
-	const lastname = req.body.lastname;
-	const person = new Person(firstname, lastname);
-  
-	personlist.push(person);
-
-	res.status(200).json(person).end();
-});
+module.exports = routes;
